@@ -1,0 +1,13 @@
+{
+  "name": "car-models",
+  "version": "1.0.0",
+  "description": "***********************************************WELCOME TO MY STUDENTS APP*****************************************************",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "yaniv sapir",
+  "license": "ISC"
+}
