@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "***********************************************WELCOME TO MY STUDENTS APP*****************************************************",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "mongoose": "^4.4.17"
+  },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

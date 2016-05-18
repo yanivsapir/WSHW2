@@ -1,7 +1,20 @@
 var express = require('express');    
 var app = express(); 
 var url = require('url'); 
-var carShowRoowModel = require('./carModelsModule');  
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://db_usr:db_pass@ds025792.mlab.com:25792/carshowroom');
+
+var conn = mongoose.connection;
+
+var Data = require('./car.js');
+
+conn.on('error', function (err) {
+    console.log('connection error' + err);
+});
+
+conn.once('open', function() {
+    console.log('connected.');
+});
 
 app.get('/', function (req, res) { 
     res.status(200).json({status:true, message:"Car Show Room app"}); 
@@ -9,22 +22,29 @@ app.get('/', function (req, res) {
 
 app.get('/getCarById', function (req, res) { 
     var urlParse = url.parse(req.url , true); 
-    var query = urlParse.query; 
-    var car = carShowRoowModel.getCarById(query.id); 
-    res.set('getCarById', 'ok'); 
-    res.json(car); 
+    var query = urlParse.query;
+    var carId = query.id;
+    Data.find({id: carId}, function(err, user){
+        if (err) throw err;
+        if (user.length === 0) res.json({"no car found in this id": carId});
+        else res.json(user);
+    });
 }); 
 
 app.get('/getAllCars', function (req, res) { 
-  var allCars = carShowRoowModel.getAllCars(); 
-  res.set('getAllCars', 'ok'); 
-  res.json(allCars); 
+    Data.find({}, function(err, user){
+        if (err) throw err;
+        res.json(user);
+    });
 }); 
  
 app.get('/getCarsByYear/:year', function (req, res) {     
-    var getCarsByYear = carShowRoowModel.getCarsByYear(req.params.year); 
-    res.set('getCarsByYear', 'ok'); 
-    res.json(getCarsByYear); 
+    var carYear = req.params.year;
+    Data.find({year: carYear}, function(err, user){
+        if (err) throw err;
+        if (user.length === 0) res.json({"no cars created on this year": carYear});
+        else res.json(user);
+    });
 });  
  
 app.all('*', function (req, res) { 
